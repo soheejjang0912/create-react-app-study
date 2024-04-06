@@ -30,9 +30,18 @@ function App() {
       console.log("SEARCH FOR ", text)
     }
   }, [text]);
+
+ 
+  const [showing, setShowing] = useState(false);
+  const onButtonClick = () => {
+    setShowing((prev) => !prev);
+
+  };
   
   return (
     <div>
+      {showing? <Hello /> : null}
+      <button onClick={onButtonClick}>{showing ? "HIDE" : "SHOW"}</button>
       <input 
         value={text}
         onChange={onText} 
@@ -44,6 +53,27 @@ function App() {
       <Button text={"Continue"} />
     </div>
   );
+}
+
+function Hello(){
+  //1.  
+  useEffect(()=>{
+    console.log("HERE!");
+    return () => console.log("BYE!"); //컴포넌트 없어질 때 사용  
+  },[]);
+
+  //2.
+  function destroyedLog(){
+    console.log("BYE");
+  }
+  function effectLog () {
+    console.log("HERE!");
+    return destroyedLog; //clean up function
+  } 
+
+  useEffect(effectLog, []);
+
+  return <h1>Hello</h1>;
 }
 
 export default App;
